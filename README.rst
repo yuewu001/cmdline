@@ -11,6 +11,10 @@ This is a simple command line parser for C++.
 - Only one header file
 - Automatic type check
 
+Note
+-----
+This version is modified by Yue Wu (yuewu@outlook.com). The author add 'group' information so that the options can be organized by groups.
+
 Sample
 ------
 
@@ -36,10 +40,11 @@ This is an example of simple usage.
     // 2nd argument is short name (no short name if '\0' specified)
     // 3rd argument is description
     // 4th argument is mandatory (optional. default is false)
-    // 5th argument is default value  (optional. it used when mandatory is false)
+    // 5th argument is group (optional, default is "")
+    // 6th argument is default value  (optional. it used when mandatory is false)
     a.add<string>("host", 'h', "host name", true, "");
     
-    // 6th argument is extra constraint.
+    // 7th argument is extra constraint.
     // Here, port number must be 1 to 65535 by cmdline::range().
     a.add<int>("port", 'p', "port number", false, 80, cmdline::range(1, 65535));
     
