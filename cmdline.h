@@ -109,10 +109,7 @@ static inline std::string demangle(const std::string &name) {
   return ret;
 }
 #else
-static inline std::string demangle(const std::string &name)
-{
-	return name;
-}
+static inline std::string demangle(const std::string &name) { return name; }
 #endif
 
 template <class T>
@@ -539,28 +536,28 @@ class parser {
     oss << "[options] ... " << ftr << std::endl;
     for (auto &pair : groups) {
       if (pair.first.length() == 0) {
-        oss << "options:" << std::endl;
+        oss << "\noptions:" << std::endl;
       } else {
-        oss << pair.first << " options:" << std::endl;
+        oss << "\n" << pair.first << " options:" << std::endl;
       }
 
-      const std::vector<option_base *> &gropu_ordered = pair.second;
+      const std::vector<option_base *> &group_ordered = pair.second;
       size_t max_width = 0;
-      for (size_t i = 0; i < gropu_ordered.size(); i++) {
-        max_width = std::max(max_width, gropu_ordered[i]->name().length());
+      for (size_t i = 0; i < group_ordered.size(); i++) {
+        max_width = std::max(max_width, group_ordered[i]->name().length());
       }
-      for (size_t i = 0; i < gropu_ordered.size(); i++) {
-        if (gropu_ordered[i]->short_name()) {
-          oss << "  -" << gropu_ordered[i]->short_name() << ", ";
+      for (size_t i = 0; i < group_ordered.size(); i++) {
+        if (group_ordered[i]->short_name()) {
+          oss << "  -" << group_ordered[i]->short_name() << ", ";
         } else {
           oss << "      ";
         }
 
-        oss << "--" << gropu_ordered[i]->name();
-        for (size_t j = gropu_ordered[i]->name().length(); j < max_width + 4;
+        oss << "--" << group_ordered[i]->name();
+        for (size_t j = group_ordered[i]->name().length(); j < max_width + 4;
              j++)
           oss << ' ';
-        oss << gropu_ordered[i]->description() << std::endl;
+        oss << group_ordered[i]->description() << std::endl;
       }
     }
     return oss.str();
@@ -579,24 +576,24 @@ class parser {
       oss << "[options] ... " << ftr << std::endl;
       oss << group << " options:" << std::endl;
 
-      const std::vector<option_base *> &gropu_ordered =
+      const std::vector<option_base *> &group_ordered =
           groups.find(group)->second;
       size_t max_width = 0;
-      for (size_t i = 0; i < gropu_ordered.size(); i++) {
-        max_width = std::max(max_width, gropu_ordered[i]->name().length());
+      for (size_t i = 0; i < group_ordered.size(); i++) {
+        max_width = std::max(max_width, group_ordered[i]->name().length());
       }
-      for (size_t i = 0; i < gropu_ordered.size(); i++) {
-        if (gropu_ordered[i]->short_name()) {
-          oss << "  -" << gropu_ordered[i]->short_name() << ", ";
+      for (size_t i = 0; i < group_ordered.size(); i++) {
+        if (group_ordered[i]->short_name()) {
+          oss << "  -" << group_ordered[i]->short_name() << ", ";
         } else {
           oss << "      ";
         }
 
-        oss << "--" << gropu_ordered[i]->name();
-        for (size_t j = gropu_ordered[i]->name().length(); j < max_width + 4;
+        oss << "--" << group_ordered[i]->name();
+        for (size_t j = group_ordered[i]->name().length(); j < max_width + 4;
              j++)
           oss << ' ';
-        oss << gropu_ordered[i]->description() << std::endl;
+        oss << group_ordered[i]->description() << std::endl;
       }
     }
     return oss.str();
@@ -610,8 +607,7 @@ class parser {
     }
 
     if (!ok) {
-      std::cerr << error() << std::endl
-                << usage();
+      std::cerr << error() << std::endl << usage();
       exit(1);
     }
   }
@@ -717,7 +713,7 @@ class parser {
       try {
         actual = read(value);
         has = true;
-      } catch (const std::exception &e) {
+      } catch (const std::exception &) {
         return false;
       }
       return true;
@@ -784,6 +780,14 @@ class parser {
   std::vector<std::string> others;
 
   std::vector<std::string> errors;
+
+ public:
+  const std::vector<option_base *> &group_options(const std::string &group) {
+    if (this->groups.count(group))
+      return this->groups[group];
+    else
+      throw cmdline_error(group + " does not exist");
+  }
 };
 
 }  // cmdline
