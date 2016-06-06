@@ -544,7 +544,7 @@ class parser {
       const std::vector<option_base *> &group_ordered = pair.second;
       size_t max_width = 0;
       for (size_t i = 0; i < group_ordered.size(); i++) {
-        max_width = std::max(max_width, group_ordered[i]->name().length());
+        max_width = (std::max)(max_width, group_ordered[i]->name().length());
       }
       for (size_t i = 0; i < group_ordered.size(); i++) {
         if (group_ordered[i]->short_name()) {
@@ -580,7 +580,7 @@ class parser {
           groups.find(group)->second;
       size_t max_width = 0;
       for (size_t i = 0; i < group_ordered.size(); i++) {
-        max_width = std::max(max_width, group_ordered[i]->name().length());
+        max_width = (std::max)(max_width, group_ordered[i]->name().length());
       }
       for (size_t i = 0; i < group_ordered.size(); i++) {
         if (group_ordered[i]->short_name()) {
