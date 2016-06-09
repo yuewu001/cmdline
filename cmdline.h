@@ -553,7 +553,7 @@ class parser {
           oss << "      ";
         }
 
-        oss << "--" << group_ordered[i]->name()<<" arg";
+        oss << "--" << group_ordered[i]->name() << " arg";
         for (size_t j = group_ordered[i]->name().length(); j < max_width + 4;
              j++)
           oss << ' ';
